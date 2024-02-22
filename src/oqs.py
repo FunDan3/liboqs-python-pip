@@ -1,4 +1,4 @@
-\"""
+"""
 Open Quantum Safe (OQS) Python Wrapper for liboqs
 
 The liboqs project provides post-quantum public key cryptography algorithms:
@@ -11,8 +11,8 @@ import ctypes as ct  # to call native
 import ctypes.util as ctu
 import importlib.metadata  # to determine module version at runtime
 import platform  # to learn the OS we're on
+import os
 import sys
-import warnings
 
 # expected return value from native OQS functions
 OQS_SUCCESS = 0
@@ -20,12 +20,20 @@ OQS_ERROR = -1
 
 
 def _load_shared_obj(name):
+	def check_path(path):
+		if os.path.exists(path):
+			return path
+		else:
+			return None
 	"""Attempts to load native OQS library."""
+	slash = "\\" if platform.system() == "Windows" else "/"
 	paths = []
 
 	# search typical locations
-	paths += [ctu.find_library(name)]
-	paths += [ctu.find_library("lib" + name)]
+	paths.append(check_path(f"{os.path.dirname(__file__)}{slash}{name}"))
+	paths.append(check_path(f".{slash}{name}"))
+	paths.append(ctu.find_library("oqs"))
+	paths.append(ctu.find_library("liboqs"))
 	dll = ct.windll if platform.system() == "Windows" else ct.cdll
 
 	for path in paths:
@@ -37,7 +45,8 @@ def _load_shared_obj(name):
 
 
 try:
-	_liboqs = _load_shared_obj("oqs")
+	name = f"liboqs{platform.architecture()[0]}{'.dll' if platform.system() == 'Windows' else '.so'}"
+	_liboqs = _load_shared_obj(name)
 	assert _liboqs
 except OSError as err:
 	sys.exit("Could not load liboqs shared library")
@@ -52,27 +61,6 @@ def native():
 
 # liboqs initialization
 native().OQS_init()
-
-
-def oqs_version():
-	"""liboqs version string."""
-	native().OQS_version.restype = ct.c_char_p
-	return ct.c_char_p(native().OQS_version()).value.decode('UTF-8')
-
-
-def oqs_python_version():
-	"""liboqs-python version string."""
-	try:
-		result = importlib.metadata.version("liboqs-python")
-	except importlib.metadata.PackageNotFoundError:
-		warnings.warn("Please install liboqs-python using pip install")
-		return None
-	return result
-
-
-# warn the use if the liboqs version differs from liboqs-python version
-if oqs_version() != oqs_python_version():
-	warnings.warn("liboqs version {} differs from liboqs-python version {}".format(oqs_version(), oqs_python_version()))
 
 
 class MechanismNotSupportedError(Exception):

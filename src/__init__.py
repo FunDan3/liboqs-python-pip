@@ -1,1 +1,1 @@
-from oqs.oqs import *
+from .oqs import *
