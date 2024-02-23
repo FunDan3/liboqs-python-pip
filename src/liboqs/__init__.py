@@ -1,1 +1,1 @@
-from .oqs import *
+from .liboqs import *

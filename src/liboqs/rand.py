@@ -7,7 +7,7 @@ https://github.com/open-quantum-safe/liboqs
 This module provides a Python 3 interface to libOQS <oqs/rand.h> RNGs.
 """
 
-from . import oqs
+from . import liboqs as oqs
 
 
 def randombytes(bytes_to_read):
