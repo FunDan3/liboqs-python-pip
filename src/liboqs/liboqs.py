@@ -38,14 +38,14 @@ def _load_shared_obj(name):
 	for path in paths:
 		if path:
 			lib = dll.LoadLibrary(path)
-			return lib
+			return lib, path #returns path for debugs
 
 	raise RuntimeError("No " + name + " shared libraries found")
 
 
 try:
 	name = f"liboqs{platform.architecture()[0]}{'.dll' if platform.system() == 'Windows' else '.so'}"
-	_liboqs = _load_shared_obj(name)
+	_liboqs, shared_library_path = _load_shared_obj(name)
 	assert _liboqs
 except OSError as err:
 	sys.exit("Could not load liboqs shared library")
