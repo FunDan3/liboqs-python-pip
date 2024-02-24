@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
 	name = "liboqs", #If you are liboqs creator please contact me via telegram @Fun_Dan3 or email dfr34560@gmail.com if you want to take this name.
-	version = "0.0.1",
+	version = "0.9.0",
 	author = "Fun_Dan3",
 	author_email = "dfr34560@gmail.com",
 	description = "Unofficial liboqs-python library with precompiled liboqs libraries",
@@ -23,5 +23,5 @@ setuptools.setup(
 	packages = setuptools.find_packages(where = "src"),
 	package_dir = {"": "src"},
 	package_data = {"": ["*.dll", "*.so"]},
-	python_requires = ">=3.0",
+	python_requires = ">=3.8",
 )
