@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
 	name = "liboqs", #If you are liboqs creator please contact me via telegram @Fun_Dan3 or email dfr34560@gmail.com if you want to take this name.
-	version = "0.9.0",
+	version = "0.9.1",
 	author = "Fun_Dan3",
 	author_email = "dfr34560@gmail.com",
 	description = "Unofficial liboqs-python library with precompiled liboqs libraries",
@@ -17,7 +17,7 @@ setuptools.setup(
 	},
 	classifiers = [
 		"Programming Language :: Python :: 3",
-		"License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+		"License :: OSI Approved :: MIT License",
 		"Operating System :: OS Independent",
 	],
 	packages = setuptools.find_packages(where = "src"),
